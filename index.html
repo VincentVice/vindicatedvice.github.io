@@ -1,168 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Mini Pong</title>
+  <meta charset="UTF-8" />
+  <title>Pong FX</title>
   <style>
-    /* ========== [1. PAGE STYLING] ========== */
-    body {
-      margin: 0;
-      background: #111;
-      color: #fff;
-      font-family: sans-serif;
-      overflow: hidden;
-    }
-    canvas {
-      display: block;
-      margin: auto;
-      background: #000;
-      border: 2px solid #fff;
-    }
+    body { margin: 0; background: black; }
+    canvas { display: block; margin: auto; background: #111; border: 2px solid white; }
   </style>
 </head>
 <body>
-
-<!-- ========== [2. CANVAS ELEMENT] ========== -->
-<canvas id="gameCanvas" width="800" height="500"></canvas>
-
+<canvas id="gameCanvas" width="640" height="480"></canvas>
 <script>
-/* ========== [3. GAME VARIABLES] ========== */
+// === SETUP ===
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
-let paddleHeight = 100;
-let paddleWidth = 10;
-let leftY = (canvas.height - paddleHeight) / 2;
-let rightY = (canvas.height - paddleHeight) / 2;
-let ball = { x: canvas.width/2, y: canvas.height/2, vx: 5, vy: 3, size: 10 };
-
-let leftScore = 0;
-let rightScore = 0;
-
-/* ========== [4. INPUT HANDLING] ========== */
-const keys = {};
+let keys = {};
 document.addEventListener("keydown", e => keys[e.key] = true);
 document.addEventListener("keyup", e => keys[e.key] = false);
 
-/* ========== [5. SOUND SETUP] ========== */
-const context = new AudioContext();
-function beep(freq = 500, duration = 0.1) {
-  const osc = context.createOscillator();
-  const gain = context.createGain();
-  osc.frequency.value = freq;
-  osc.connect(gain);
-  gain.connect(context.destination);
-  osc.start();
-  osc.stop(context.currentTime + duration);
-}
+// === SOUND EFFECT ===
+const bounceSound = new AudioContext();
+let bounceBuffer;
 
-/* ========== [6. PARTICLE EFFECTS] ========== */
-const particles = [];
+fetch("https://freesound.org/data/previews/337/337049_3232290-lq.mp3") // tiny pong sound
+  .then(res => res.arrayBuffer())
+  .then(data => bounceSound.decodeAudioData(data))
+  .then(buffer => bounceBuffer = buffer);
+
+// === PARTICLE SYSTEM ===
+let particles = [];
 function spawnParticles(x, y) {
-  for (let i = 0; i < 15; i++) {
-    particles.push({
-      x, y,
-      vx: (Math.random() - 0.5) * 5,
-      vy: (Math.random() - 0.5) * 5,
-      life: 30
-    });
+  for (let i = 0; i < 10; i++) {
+    particles.push({ x, y, dx: Math.random()*4-2, dy: Math.random()*4-2, life: 30 });
   }
 }
+
+// === GAME STATE ===
+let ball = { x: 320, y: 240, dx: 3, dy: 2 };
+let leftPaddle = { y: 200 };
+let rightPaddle = { y: 200 };
+const paddleHeight = 80;
+
+// === DRAW FUNCTIONS ===
+function drawRect(x, y, w, h, color="white") {
+  ctx.fillStyle = color;
+  ctx.fillRect(x, y, w, h);
+}
+
+function drawBall() {
+  drawRect(ball.x - 5, ball.y - 5, 10, 10);
+}
+
 function drawParticles() {
-  particles.forEach(p => {
-    ctx.fillStyle = rgba(255,255,255,${p.life / 30});
-    ctx.fillRect(p.x, p.y, 2, 2);
-    p.x += p.vx;
-    p.y += p.vy;
-    p.life--;
-  });
-  for (let i = particles.length - 1; i >= 0; i--) {
-    if (particles[i].life <= 0) particles.splice(i, 1);
+  for (let p of particles) {
+    drawRect(p.x, p.y, 2, 2, "yellow");
   }
 }
 
-/* ========== [7. GAME UPDATE LOGIC] ========== */
+// === UPDATE ===
 function update() {
-  // Player movement
-  if (keys["w"]) leftY -= 6;
-  if (keys["s"]) leftY += 6;
-  if (keys["ArrowUp"]) rightY -= 6;
-  if (keys["ArrowDown"]) rightY += 6;
+  // Move paddles
+  if (keys["w"]) leftPaddle.y -= 5;
+  if (keys["s"]) leftPaddle.y += 5;
+  if (keys["ArrowUp"]) rightPaddle.y -= 5;
+  if (keys["ArrowDown"]) rightPaddle.y += 5;
 
-  // Clamp paddle positions
-  leftY = Math.max(0, Math.min(canvas.height - paddleHeight, leftY));
-  rightY = Math.max(0, Math.min(canvas.height - paddleHeight, rightY));
+  // Clamp paddles
+  leftPaddle.y = Math.max(0, Math.min(400, leftPaddle.y));
+  rightPaddle.y = Math.max(0, Math.min(400, rightPaddle.y));
 
-  // Ball movement
-  ball.x += ball.vx;
-  ball.y += ball.vy;
+  // Move ball
+  ball.x += ball.dx;
+  ball.y += ball.dy;
 
-  // Ball collision with top/bottom
-  if (ball.y < 0 || ball.y > canvas.height - ball.size) {
-    ball.vy *= -1;
-    beep(300);
+  // Bounce top/bottom
+  if (ball.y <= 0 || ball.y >= 470) ball.dy *= -1;
+
+  // Bounce paddles
+  if (ball.x < 30 && ball.y > leftPaddle.y && ball.y < leftPaddle.y + paddleHeight) {
+    ball.dx *= -1;
+    playBounce();
+    spawnParticles(ball.x, ball.y);
+  }
+  if (ball.x > 610 && ball.y > rightPaddle.y && ball.y < rightPaddle.y + paddleHeight) {
+    ball.dx *= -1;
+    playBounce();
     spawnParticles(ball.x, ball.y);
   }
 
-  // Ball collision with paddles
-  if (ball.x < paddleWidth && ball.y > leftY && ball.y < leftY + paddleHeight) {
-    ball.vx *= -1;
-    beep(600);
-    spawnParticles(ball.x, ball.y);
-  }
-  if (ball.x > canvas.width - paddleWidth - ball.size &&
-      ball.y > rightY && ball.y < rightY + paddleHeight) {
-    ball.vx *= -1;
-    beep(600);
-    spawnParticles(ball.x, ball.y);
+  // Reset if out of bounds
+  if (ball.x < 0 || ball.x > 640) {
+    ball.x = 320;
+    ball.y = 240;
+    ball.dx = 3 * (Math.random() > 0.5 ? 1 : -1);
+    ball.dy = 2 * (Math.random() > 0.5 ? 1 : -1);
   }
 
-  // Scoring logic
-  if (ball.x < 0) {
-    rightScore++;
-    resetBall();
-  }
-  if (ball.x > canvas.width) {
-    leftScore++;
-    resetBall();
+  // Update particles
+  particles = particles.filter(p => p.life-- > 0);
+  for (let p of particles) {
+    p.x += p.dx;
+    p.y += p.dy;
   }
 }
 
-/* ========== [8. BALL RESET FUNCTION] ========== */
-function resetBall() {
-  ball = {
-    x: canvas.width / 2,
-    y: canvas.height / 2,
-    vx: 5 * (Math.random() > 0.5 ? 1 : -1),
-    vy: 3
-  };
+// === SOUND TRIGGER ===
+function playBounce() {
+  if (!bounceBuffer) return;
+  const src = bounceSound.createBufferSource();
+  src.buffer = bounceBuffer;
+  src.connect(bounceSound.destination);
+  src.start();
 }
 
-/* ========== [9. DRAWING TO SCREEN] ========== */
-function draw() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  // Draw paddles and ball
-  ctx.fillStyle = "#fff";
-  ctx.fillRect(0, leftY, paddleWidth, paddleHeight);
-  ctx.fillRect(canvas.width - paddleWidth, rightY, paddleWidth, paddleHeight);
-  ctx.fillRect(ball.x, ball.y, ball.size, ball.size);
-
-  // Draw particles
-  drawParticles();
-
-  // Draw score
-  ctx.font = "20px sans-serif";
-  ctx.fillText(leftScore, canvas.width / 4, 30);
-  ctx.fillText(rightScore, canvas.width * 3 / 4, 30);
-}
-
-/* ========== [10. GAME LOOP] ========== */
+// === MAIN LOOP ===
 function loop() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
   update();
-  draw();
+  drawRect(10, leftPaddle.y, 10, paddleHeight);
+  drawRect(620, rightPaddle.y, 10, paddleHeight);
+  drawBall();
+  drawParticles();
   requestAnimationFrame(loop);
 }
+
 loop();
 </script>
 </body>
