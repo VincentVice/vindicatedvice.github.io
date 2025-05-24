@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mini Pong</title>
+  <style>
+    /* ========== [1. PAGE STYLING] ========== */
+    body {
+      margin: 0;
+      background: #111;
+      color: #fff;
+      font-family: sans-serif;
+      overflow: hidden;
+    }
+    canvas {
+      display: block;
+      margin: auto;
+      background: #000;
+      border: 2px solid #fff;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ========== [2. CANVAS ELEMENT] ========== -->
+<canvas id="gameCanvas" width="800" height="500"></canvas>
+
+<script>
+/* ========== [3. GAME VARIABLES] ========== */
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+
+let paddleHeight = 100;
+let paddleWidth = 10;
+let leftY = (canvas.height - paddleHeight) / 2;
+let rightY = (canvas.height - paddleHeight) / 2;
+let ball = { x: canvas.width/2, y: canvas.height/2, vx: 5, vy: 3, size: 10 };
+
+let leftScore = 0;
+let rightScore = 0;
+
+/* ========== [4. INPUT HANDLING] ========== */
+const keys = {};
+document.addEventListener("keydown", e => keys[e.key] = true);
+document.addEventListener("keyup", e => keys[e.key] = false);
+
+/* ========== [5. SOUND SETUP] ========== */
+const context = new AudioContext();
+function beep(freq = 500, duration = 0.1) {
+  const osc = context.createOscillator();
+  const gain = context.createGain();
+  osc.frequency.value = freq;
+  osc.connect(gain);
+  gain.connect(context.destination);
+  osc.start();
+  osc.stop(context.currentTime + duration);
+}
+
+/* ========== [6. PARTICLE EFFECTS] ========== */
+const particles = [];
+function spawnParticles(x, y) {
+  for (let i = 0; i < 15; i++) {
+    particles.push({
+      x, y,
+      vx: (Math.random() - 0.5) * 5,
+      vy: (Math.random() - 0.5) * 5,
+      life: 30
+    });
+  }
+}
+function drawParticles() {
+  particles.forEach(p => {
+    ctx.fillStyle = `rgba(255,255,255,${p.life / 30})`;
+    ctx.fillRect(p.x, p.y, 2, 2);
+    p.x += p.vx;
+    p.y += p.vy;
+    p.life--;
+  });
+  for (let i = particles.length - 1; i >= 0; i--) {
+    if (particles[i].life <= 0) particles.splice(i, 1);
+  }
+}
+
+/* ========== [7. GAME UPDATE LOGIC] ========== */
+function update() {
+  // Player movement
+  if (keys["w"]) leftY -= 6;
+  if (keys["s"]) leftY += 6;
+  if (keys["ArrowUp"]) rightY -= 6;
+  if (keys["ArrowDown"]) rightY += 6;
+
+  // Clamp paddle positions
+  leftY = Math.max(0, Math.min(canvas.height - paddleHeight, leftY));
+  rightY = Math.max(0, Math.min(canvas.height - paddleHeight, rightY));
+
+  // Ball movement
+  ball.x += ball.vx;
+  ball.y += ball.vy;
+
+  // Ball collision with top/bottom
+  if (ball.y < 0 || ball.y > canvas.height - ball.size) {
+    ball.vy *= -1;
+    beep(300);
+    spawnParticles(ball.x, ball.y);
+  }
+
+  // Ball collision with paddles
+  if (ball.x < paddleWidth && ball.y > leftY && ball.y < leftY + paddleHeight) {
+    ball.vx *= -1;
+    beep(600);
+    spawnParticles(ball.x, ball.y);
+  }
+  if (ball.x > canvas.width - paddleWidth - ball.size &&
+      ball.y > rightY && ball.y < rightY + paddleHeight) {
+    ball.vx *= -1;
+    beep(600);
+    spawnParticles(ball.x, ball.y);
+  }
+
+  // Scoring logic
+  if (ball.x < 0) {
+    rightScore++;
+    resetBall();
+  }
+  if (ball.x > canvas.width) {
+    leftScore++;
+    resetBall();
+  }
+}
+
+/* ========== [8. BALL RESET FUNCTION] ========== */
+function resetBall() {
+  ball = {
+    x: canvas.width / 2,
+    y: canvas.height / 2,
+    vx: 5 * (Math.random() > 0.5 ? 1 : -1),
+    vy: 3
+  };
+}
+
+/* ========== [9. DRAWING TO SCREEN] ========== */
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Draw paddles and ball
+  ctx.fillStyle = "#fff";
+  ctx.fillRect(0, leftY, paddleWidth, paddleHeight);
+  ctx.fillRect(canvas.width - paddleWidth, rightY, paddleWidth, paddleHeight);
+  ctx.fillRect(ball.x, ball.y, ball.size, ball.size);
+
+  // Draw particles
+  drawParticles();
+
+  // Draw score
+  ctx.font = "20px sans-serif";
+  ctx.fillText(leftScore, canvas.width / 4, 30);
+  ctx.fillText(rightScore, canvas.width * 3 / 4, 30);
+}
+
+/* ========== [10. GAME LOOP] ========== */
+function loop() {
+  update();
+  draw();
+  requestAnimationFrame(loop);
+}
+loop();
+</script>
+</body>
+</html>
