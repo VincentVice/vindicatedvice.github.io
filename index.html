@@ -20,7 +20,7 @@
   <p>Use <strong>W</strong> / <strong>S</strong> to move your paddle. Try to beat the AI!</p>
 </div>
 
-<canvas id="gameCanvas" width="640" height="480"></canvas>
+<canvas id="gameCanvas" width="480" height="320"></canvas>
 
 <script>
 // === SETUP ===
@@ -40,9 +40,9 @@ function spawnParticles(x, y) {
 }
 
 // === GAME STATE ===
-let ball = { x: 320, y: 240, dx: 3, dy: 2 };
-let leftPaddle = { y: 200 };
-let rightPaddle = { y: 200 }; // AI
+let ball = { x: 240, y: 160, dx: 3, dy: 2 };
+let leftPaddle = { y: 120 };
+let rightPaddle = { y: 120 }; // AI
 const paddleHeight = 80;
 
 // === DRAW FUNCTIONS ===
@@ -66,34 +66,34 @@ function update() {
   // Player paddle
   if (keys["w"]) leftPaddle.y -= 5;
   if (keys["s"]) leftPaddle.y += 5;
-  leftPaddle.y = Math.max(0, Math.min(400, leftPaddle.y));
+  leftPaddle.y = Math.max(0, Math.min(240, leftPaddle.y));
 
   // AI paddle logic
   if (ball.y < rightPaddle.y + paddleHeight / 2) rightPaddle.y -= 3;
   else if (ball.y > rightPaddle.y + paddleHeight / 2) rightPaddle.y += 3;
-  rightPaddle.y = Math.max(0, Math.min(400, rightPaddle.y));
+  rightPaddle.y = Math.max(0, Math.min(240, rightPaddle.y));
 
   // Move ball
   ball.x += ball.dx;
   ball.y += ball.dy;
 
   // Bounce top/bottom
-  if (ball.y <= 0 || ball.y >= 470) ball.dy *= -1;
+  if (ball.y <= 0 || ball.y >= 310) ball.dy *= -1;
 
   // Bounce paddles
   if (ball.x < 30 && ball.y > leftPaddle.y && ball.y < leftPaddle.y + paddleHeight) {
     ball.dx *= -1;
     spawnParticles(ball.x, ball.y);
   }
-  if (ball.x > 610 && ball.y > rightPaddle.y && ball.y < rightPaddle.y + paddleHeight) {
+  if (ball.x > 450 && ball.y > rightPaddle.y && ball.y < rightPaddle.y + paddleHeight) {
     ball.dx *= -1;
     spawnParticles(ball.x, ball.y);
   }
 
   // Reset if out of bounds
-  if (ball.x < 0 || ball.x > 640) {
-    ball.x = 320;
-    ball.y = 240;
+  if (ball.x < 0 || ball.x > 480) {
+    ball.x = 240;
+    ball.y = 160;
     ball.dx = 3 * (Math.random() > 0.5 ? 1 : -1);
     ball.dy = 2 * (Math.random() > 0.5 ? 1 : -1);
   }
@@ -111,7 +111,7 @@ function loop() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   update();
   drawRect(10, leftPaddle.y, 10, paddleHeight);
-  drawRect(620, rightPaddle.y, 10, paddleHeight);
+  drawRect(460, rightPaddle.y, 10, paddleHeight);
   drawBall();
   drawParticles();
   requestAnimationFrame(loop);
