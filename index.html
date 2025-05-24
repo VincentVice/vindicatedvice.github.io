@@ -4,12 +4,24 @@
   <meta charset="UTF-8" />
   <title>Pong FX</title>
   <style>
-    body { margin: 0; background: black; }
-    canvas { display: block; margin: auto; background: #111; border: 2px solid white; }
+    body { margin: 0; background: black; color: white; font-family: sans-serif; text-align: center; }
+    #ui {
+      padding: 10px;
+      background: #222;
+      border-bottom: 2px solid white;
+    }
+    canvas { display: block; margin: 20px auto; background: #111; border: 2px solid white; }
   </style>
 </head>
 <body>
+
+<div id="ui">
+  <h1>Pong FX</h1>
+  <p>Use <strong>W</strong> / <strong>S</strong> to move your paddle. Try to beat the AI!</p>
+</div>
+
 <canvas id="gameCanvas" width="640" height="480"></canvas>
+
 <script>
 // === SETUP ===
 const canvas = document.getElementById("gameCanvas");
@@ -30,7 +42,7 @@ function spawnParticles(x, y) {
 // === GAME STATE ===
 let ball = { x: 320, y: 240, dx: 3, dy: 2 };
 let leftPaddle = { y: 200 };
-let rightPaddle = { y: 200 };
+let rightPaddle = { y: 200 }; // AI
 const paddleHeight = 80;
 
 // === DRAW FUNCTIONS ===
@@ -51,14 +63,14 @@ function drawParticles() {
 
 // === UPDATE ===
 function update() {
-  // Move paddles
+  // Player paddle
   if (keys["w"]) leftPaddle.y -= 5;
   if (keys["s"]) leftPaddle.y += 5;
-  if (keys["ArrowUp"]) rightPaddle.y -= 5;
-  if (keys["ArrowDown"]) rightPaddle.y += 5;
-
-  // Clamp paddles
   leftPaddle.y = Math.max(0, Math.min(400, leftPaddle.y));
+
+  // AI paddle logic
+  if (ball.y < rightPaddle.y + paddleHeight / 2) rightPaddle.y -= 3;
+  else if (ball.y > rightPaddle.y + paddleHeight / 2) rightPaddle.y += 3;
   rightPaddle.y = Math.max(0, Math.min(400, rightPaddle.y));
 
   // Move ball
