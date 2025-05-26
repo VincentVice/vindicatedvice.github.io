@@ -1,27 +1,27 @@
 body {
   font-family: sans-serif;
-  background: #111;
+  background-color: #111;
   color: #fff;
   display: flex;
   justify-content: center;
-  padding: 2em;
+  padding-top: 50px;
 }
 
 #game {
-  background: #222;
+  background-color: #222;
   padding: 20px;
   border-radius: 10px;
-  max-width: 400px;
-  width: 100%;
+  width: 300px;
+  box-shadow: 0 0 10px #000;
 }
 
 .stats {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 1em;
+  margin-bottom: 20px;
 }
 
 #log {
-  margin-top: 1em;
-  min-height: 50px;
+  margin-top: 20px;
+  min-height: 60px;
 }
