@@ -1,159 +1,191 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Vindicated Vice - Tweek & Craig Ships</title>
-<style>
-  /* Reset & base */
-  * {
-    box-sizing: border-box;
-  }
-  body {
-    margin: 0;
-    background-color: #000;
-    color: #eee;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
-  a, button {
-    cursor: pointer;
-    border: none;
-    background: none;
-    color: inherit;
-    font-size: 1rem;
-    font-weight: 600;
-    user-select: none;
-  }
-  button:focus, a:focus {
-    outline: 2px solid #a259ff;
-    outline-offset: 2px;
-  }
-  /* Layout grid */
-  .container {
-    display: grid;
-    grid-template-columns: 150px 1fr;
-    grid-template-rows: 50px 250px 1fr;
-    grid-template-areas:
-      "sidebar topnav"
-      "sidebar video"
-      "sidebar content";
-    height: 100vh;
-    gap: 10px;
-    padding: 10px;
-  }
-  /* Left sidebar */
-  .sidebar {
-    grid-area: sidebar;
-    background-color: #1b0038;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    padding: 10px;
-    overflow-y: auto;
-  }
-  .sidebar button {
-    background-color: #3a1a8b;
-    color: #fff;
-    padding: 10px;
-    border-radius: 6px;
-    transition: background-color 0.3s ease;
-  }
-  .sidebar button:hover {
-    background-color: #5c34d8;
-  }
-  /* Top navigation */
-  .topnav {
-    grid-area: topnav;
-    background-color: #1b0038;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding: 0 10px;
-    overflow-x: auto;
-  }
-  .topnav button {
-    background-color: #3a1a8b;
-    color: #fff;
-    padding: 8px 14px;
-    border-radius: 6px;
-    transition: background-color 0.3s ease;
-    white-space: nowrap;
-  }
-  .topnav button:hover {
-    background-color: #5c34d8;
-  }
-  /* Video area */
-  .video {
-    grid-area: video;
-    background-color: #222;
-    border: 2px solid #5c34d8;
-    border-radius: 8px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .video iframe {
-    border-radius: 6px;
-    width: 320px;
-    height: 180px;
-  }
-  /* Text area below video */
-  .description {
-    grid-area: content;
-    background-color: #121212;
-    border: 2px solid #5c34d8;
-    border-radius: 8px;
-    padding: 20px;
-    overflow-y: auto;
-  }
-  .description h2 {
-    margin-top: 0;
-    color: #a259ff;
-  }
-  /* Category sections under the description */
-  .categories {
-    margin-top: 20px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-  }
-  .category {
-    background-color: #1f1b2e;
-    border-radius: 8px;
-    flex: 1 1 200px;
-    min-width: 200px;
-    padding: 16px;
-    color: #ddd;
-    box-shadow: 0 0 10px #5c34d8aa;
-  }
-  .category h3 {
-    color: #a259ff;
-    margin-top: 0;
-  }
-  .category button {
-    margin-top: 10px;
-    background-color: #3a1a8b;
-    padding: 8px 12px;
-    border-radius: 6px;
-    color: #fff;
-  }
-  .category button:hover {
-    background-color: #5c34d8;
-  }
-  /* Scrollbar for sidebar and description if overflow */
-  .sidebar::-webkit-scrollbar,
-  .description::-webkit-scrollbar {
-    width: 8px;
-  }
-  .sidebar::-webkit-scrollbar-thumb,
-  .description::-webkit-scrollbar-thumb {
-    background-color: #5c34d8;
-    border-radius: 4px;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vindicated Vice - Tweek & Craig Ships</title>
+  <style>
+    /* Reset & base */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      background-color: #000;
+      color: #eee;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    a, button {
+      cursor: pointer;
+      border: none;
+      background: none;
+      color: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      user-select: none;
+    }
+    button:focus, a:focus {
+      outline: 2px solid #a259ff;
+      outline-offset: 2px;
+    }
+    /* Layout grid */
+    .container {
+      display: grid;
+      grid-template-columns: 150px 1fr;
+      grid-template-rows: 80px 50px 250px 1fr;
+      grid-template-areas:
+        "header header"
+        "sidebar topnav"
+        "sidebar video"
+        "sidebar content";
+      height: 100vh;
+      gap: 10px;
+      padding: 10px;
+    }
+    /* Header */
+    .header {
+      grid-area: header;
+      background-color: #1b0038;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+    }
+    .header h1 {
+      margin: 0;
+      color: #a259ff;
+      font-size: 2rem;
+    }
+    /* Left sidebar */
+    .sidebar {
+      grid-area: sidebar;
+      background-color: #1b0038;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 10px;
+      overflow-y: auto;
+    }
+    .sidebar button {
+      background-color: #3a1a8b;
+      color: #fff;
+      padding: 10px;
+      border-radius: 6px;
+      transition: background-color 0.3s ease;
+    }
+    .sidebar button:hover {
+      background-color: #5c34d8;
+    }
+    /* Top navigation */
+    .topnav {
+      grid-area: topnav;
+      background-color: #1b0038;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 0 10px;
+      overflow-x: auto;
+    }
+    .topnav button {
+      background-color: #3a1a8b;
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 6px;
+      transition: background-color 0.3s ease;
+      white-space: nowrap;
+    }
+    .topnav button:hover {
+      background-color: #5c34d8;
+    }
+    /* Video area */
+    .video {
+      grid-area: video;
+      background-color: #222;
+      border: 2px solid #5c34d8;
+      border-radius: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .video iframe {
+      border-radius: 6px;
+      width: 320px;
+      height: 180px;
+    }
+    /* Text area below video */
+    .description {
+      grid-area: content;
+      background-color: #121212;
+      border: 2px solid #5c34d8;
+      border-radius: 8px;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    .description h2 {
+      margin-top: 0;
+      color: #a259ff;
+    }
+    /* Category sections under the description */
+    .categories {
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .category {
+      background-color: #1f1b2e;
+      border-radius: 8px;
+      flex: 1 1 200px;
+      min-width: 200px;
+      padding: 16px;
+      color: #ddd;
+      box-shadow: 0 0 10px #5c34d8aa;
+    }
+    .category h3 {
+      color: #a259ff;
+      margin-top: 0;
+    }
+    .category button {
+      margin-top: 10px;
+      background-color: #3a1a8b;
+      padding: 8px 12px;
+      border-radius: 6px;
+      color: #fff;
+    }
+    .category button:hover {
+      background-color: #5c34d8;
+    }
+    /* Scrollbar for sidebar and description if overflow */
+    .sidebar::-webkit-scrollbar,
+    .description::-webkit-scrollbar {
+      width: 8px;
+    }
+    .sidebar::-webkit-scrollbar-thumb,
+    .description::-webkit-scrollbar-thumb {
+      background-color: #5c34d8;
+      border-radius: 4px;
+    }
+    /* Graphics section */
+    .graphics {
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+    }
+    .graphics img {
+      max-width: 200px;
+      border-radius: 8px;
+      border: 2px solid #5c34d8;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
+    <header class="header" aria-label="Site Title">
+      <h1>Vindicated Vice - Tweek & Craig Ships</h1>
+    </header>
+
     <nav class="sidebar" aria-label="Main Navigation">
       <button>Tweek</button>
       <button>Craig</button>
@@ -162,9 +194,6 @@
       <button>Ship 3</button>
       <button>Ship 4</button>
       <button>Ship 5</button>
-      <button>Ship 6</button>
-      <button>Ship 7</button>
-      <button>Ship 8</button>
     </nav>
 
     <header class="topnav" aria-label="Top Navigation">
@@ -175,9 +204,6 @@
       <button>Contact</button>
       <button>Links</button>
       <button>FAQ</button>
-      <button>News</button>
-      <button>Events</button>
-      <button>Support</button>
     </header>
 
     <section class="video" aria-label="Featured Video">
@@ -230,6 +256,11 @@
           <p>Community events and ship celebrations.</p>
           <button>Learn More</button>
         </article>
+      </div>
+
+      <div class="graphics">
+        <img src="https://www.clipartmax.com/png/middle/222-2223184_tweek-and-craig-by-keiarubino-south-park.png" alt="Tweek and Craig by Keiarubino">
+        <img src="https://www.clipartmax.com/png/middle/222-2223184_tweek-and-craig-by-keiarubino-south-park.png" alt="Tweek and Craig Fan Art">
       </div>
     </section>
   </div>
