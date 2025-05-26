@@ -2,7 +2,7 @@ let player = {
   name: "Hero",
   hp: 100,
   maxHp: 100,
-  attack: 10,
+  attack: 10
 };
 
 let enemy = {
@@ -10,7 +10,7 @@ let enemy = {
   hp: 30,
   maxHp: 30,
   attack: 5,
-  level: 1,
+  level: 1
 };
 
 const playerStats = document.getElementById("playerStats");
@@ -24,25 +24,30 @@ function updateStats() {
 }
 
 function logMessage(message) {
-  log.innerHTML = message;
+  log.innerText = message;
 }
 
 function attack() {
-  if (player.hp <= 0) return;
+  if (player.hp <= 0 || enemy.hp <= 0) return;
 
   // Player attacks
   enemy.hp -= player.attack;
-  logMessage(You hit the ${enemy.name} for ${player.attack} damage!);
+  enemy.hp = Math.max(0, enemy.hp);
+  logMessage(You hit ${enemy.name} for ${player.attack} damage!);
+  updateStats();
 
   if (enemy.hp <= 0) {
-    logMessage(You defeated the ${enemy.name}!);
-    setTimeout(nextEnemy, 1000);
+    setTimeout(() => {
+      logMessage(You defeated ${enemy.name}!);
+      setTimeout(spawnNextEnemy, 1000);
+    }, 500);
     return;
   }
 
-  // Enemy attacks
+  // Enemy attacks after short delay
   setTimeout(() => {
     player.hp -= enemy.attack;
+    player.hp = Math.max(0, player.hp);
     logMessage(${enemy.name} hits you for ${enemy.attack} damage!);
     updateStats();
 
@@ -51,17 +56,14 @@ function attack() {
       attackBtn.disabled = true;
     }
   }, 500);
-
-  updateStats();
 }
 
-function nextEnemy() {
+function spawnNextEnemy() {
   enemy.level += 1;
   enemy.name = Slime Lv.${enemy.level};
   enemy.maxHp += 10;
   enemy.attack += 2;
   enemy.hp = enemy.maxHp;
-
   logMessage(A new enemy appears: ${enemy.name}!);
   updateStats();
 }
@@ -69,3 +71,4 @@ function nextEnemy() {
 attackBtn.addEventListener("click", attack);
 
 updateStats();
+logMessage(A wild ${enemy.name} appears!);
