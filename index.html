@@ -1,14 +1,12 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Vindicated Vice</title>
+<title>Canon Ships Central</title>
 <style>
-  /* Reset & base */
-  * {
-    box-sizing: border-box;
-  }
+  * { box-sizing: border-box; }
   body {
     margin: 0;
     background-color: #000;
@@ -28,7 +26,6 @@
     outline: 2px solid #a259ff;
     outline-offset: 2px;
   }
-  /* Layout grid */
   .container {
     display: grid;
     grid-template-columns: 150px 1fr;
@@ -41,7 +38,6 @@
     gap: 10px;
     padding: 10px;
   }
-  /* Left sidebar */
   .sidebar {
     grid-area: sidebar;
     background-color: #1b0038;
@@ -61,7 +57,6 @@
   .sidebar button:hover {
     background-color: #5c34d8;
   }
-  /* Top navigation */
   .topnav {
     grid-area: topnav;
     background-color: #1b0038;
@@ -82,7 +77,6 @@
   .topnav button:hover {
     background-color: #5c34d8;
   }
-  /* Video area */
   .video {
     grid-area: video;
     background-color: #222;
@@ -97,7 +91,6 @@
     width: 320px;
     height: 180px;
   }
-  /* Text area below video */
   .description {
     grid-area: content;
     background-color: #121212;
@@ -110,7 +103,6 @@
     margin-top: 0;
     color: #a259ff;
   }
-  /* Category sections under the description */
   .categories {
     margin-top: 20px;
     display: flex;
@@ -140,7 +132,6 @@
   .category button:hover {
     background-color: #5c34d8;
   }
-  /* Scrollbar for sidebar and description if overflow */
   .sidebar::-webkit-scrollbar,
   .description::-webkit-scrollbar {
     width: 8px;
@@ -154,88 +145,71 @@
 </head>
 <body>
   <div class="container">
-    <!-- Left side vertical buttons -->
     <nav class="sidebar" aria-label="Main Navigation">
-      <button>Button 1</button>
-      <button>Button 2</button>
-      <button>Button 3</button>
-      <button>Button 4</button>
-      <button>Button 5</button>
-      <button>Button 6</button>
-      <button>Button 7</button>
-      <button>Button 8</button>
-      <button>Button 9</button>
-      <button>Button 10</button>
+      <button>Craig x Tweek</button>
+      <button>Nagisa x Rei</button>
+      <button>Shuichi x Yuki</button>
+      <button>Victor x Yuri</button>
+      <button>Izuku x Todoroki</button>
+      <button>Kaworu x Shinji</button>
     </nav>
 
-    <!-- Top horizontal buttons -->
     <header class="topnav" aria-label="Top Navigation">
-      <button>Option 1</button>
-      <button>Option 2</button>
-      <button>Option 3</button>
-      <button>Option 4</button>
-      <button>Option 5</button>
-      <button>Option 6</button>
-      <button>Option 7</button>
-      <button>Option 8</button>
-      <button>Option 9</button>
-      <button>Option 10</button>
+      <button>All Ships</button>
+      <button>Canon Only</button>
+      <button>Fan Favorites</button>
+      <button>Submit Pairing</button>
+      <button>About</button>
     </header>
 
-    <!-- Center small video embed -->
     <section class="video" aria-label="Featured Video">
-      <!-- Example YouTube embed, replace src with your own -->
       <iframe 
-        src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
-        title="Featured Video" 
+        src="https://www.youtube.com/embed/t_F5oZsM6Wo" 
+        title="Craig x Tweek AMV" 
         frameborder="0" 
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
         allowfullscreen>
       </iframe>
     </section>
 
-    <!-- Large text area below video -->
     <section class="description" aria-label="Description Text">
-      <h2>Welcome to Vindicated Vice</h2>
+      <h2>Welcome to Canon Ships Central</h2>
       <p>
-        This is your main area for text content. Use this space to introduce visitors to the site, 
-        share news, updates, or important info related to your games or community. 
-        The background is dark to reduce eye strain and the purple accents highlight important areas.
+        Explore the most beloved, confirmed, or fan-accepted pairings in anime, games, and pop culture. Our focus is on established, emotionally resonant pairings that celebrate character dynamics.
       </p>
       <p>
-        Below you will find categories with buttons that can link to further reading, pages, or resources.
+        Use the sidebar to navigate to your favorite ships, or submit one you think deserves the spotlight.
       </p>
 
-      <!-- Categories with text and buttons -->
       <div class="categories">
         <article class="category">
-          <h3>Category 1</h3>
-          <p>Some info about category 1 here.</p>
-          <button>Learn More</button>
+          <h3>Craig x Tweek (South Park)</h3>
+          <p>Canonically paired in the episode "Tweek x Craig," these two have become a staple of Western BL culture.</p>
+          <button>View Details</button>
         </article>
 
         <article class="category">
-          <h3>Category 2</h3>
-          <p>Some info about category 2 here.</p>
-          <button>Learn More</button>
+          <h3>Nagisa x Rei (Free!)</h3>
+          <p>This adorable duo has balanced support and chemistry since season one. A fan-favorite!</p>
+          <button>View Details</button>
         </article>
 
         <article class="category">
-          <h3>Category 3</h3>
-          <p>Some info about category 3 here.</p>
-          <button>Learn More</button>
+          <h3>Victor x Yuri (Yuri on Ice)</h3>
+          <p>Openly romantic and inspirational. Victor and Yuri set the gold standard for canon BL ships.</p>
+          <button>View Details</button>
         </article>
 
         <article class="category">
-          <h3>Category 4</h3>
-          <p>Some info about category 4 here.</p>
-          <button>Learn More</button>
+          <h3>Shuichi x Yuki (Gravitation)</h3>
+          <p>One of the earliest well-known BL pairings in anime, their dynamic is complex and dramatic.</p>
+          <button>View Details</button>
         </article>
 
         <article class="category">
-          <h3>Category 5</h3>
-          <p>Some info about category 5 here.</p>
-          <button>Learn More</button>
+          <h3>Kaworu x Shinji (Evangelion)</h3>
+          <p>A tragic and beautiful pairing, Kaworu's love is unconditional. Canon depending on interpretation.</p>
+          <button>View Details</button>
         </article>
       </div>
     </section>
