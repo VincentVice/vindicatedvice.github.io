@@ -1,33 +1,17 @@
 body {
-  font-family: sans-serif;
-  background: #111;
-  color: #fff;
-  text-align: center;
-  padding: 40px;
+  font-family: Arial, sans-serif;
+  margin: 20px;
 }
-
-#game {
-  max-width: 600px;
-  margin: auto;
-  background: #222;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 0 20px #0f0;
-}
-
 #log {
-  margin: 20px 0;
-  height: 100px;
+  margin-top: 20px;
+  height: 150px;
   overflow-y: auto;
-  background: #000;
+  background: #f0f0f0;
   padding: 10px;
-  border: 1px solid #333;
+  border: 1px solid #ccc;
 }
-
 button {
+  margin-top: 15px;
   padding: 10px 20px;
-  background: #0f0;
-  border: none;
-  font-size: 1.2em;
-  cursor: pointer;
+  font-size: 16px;
 }
